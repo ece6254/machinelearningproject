@@ -1,10 +1,10 @@
-function [Xout, numStraps]= call_Bootstrap(TrainDataString, numStraps)
+function [Y, numStraps]= call_Bootstrap(train_set, numStraps)
 
 % numStraps determines the # of subsets of data output
 % Size will be 
 
-train_set = load(TrainDataString);
 x=train_set.x; 
+
 
 for k=1:numStraps
     [y, ind]=datasample(x,length(x));
@@ -12,5 +12,4 @@ for k=1:numStraps
     Y(numStraps+1-k)=struct('x',y,'y',y_labels); 
 end
 
-Xout=Y; 
 end

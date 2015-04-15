@@ -24,6 +24,7 @@ switch dataCreationMethod
         %[trainingData, k] = function(trainingData);
         %maybe datCreatTrainData should be a cell array to separate data sets?
     case 2  %other method
+        trainingData= call_VirtualData(trainingData, 0.5)        
         %call function here
         %trainingData = function(trainingData);
         

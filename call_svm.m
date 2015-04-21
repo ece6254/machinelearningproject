@@ -1,14 +1,14 @@
 function [risk, confusionMatrix] = call_svm(trainingData, testData, numStraps)
 
-for i = numStraps:-1:1
-    svmStruct(i) = svmtrain(trainingData(i).x,trainingData(i).y);
-    
-    
-    
-end
+%for i = numStraps:-1:1
+%    current_model = svmtrain(trainingData(i).x,trainingData(i).y);
+        current_model = svmtrain(trainingData.y,trainingData.x);
+%end
 
-Group = svmclassify(svmStruct,testData); 
-
+[predicted_label, acc, ~] = svmpredict(testData.y, testData.x, current_model);
+confusionMatrix = confusionmat(testData.y, predicted_label);
+SVMaccuracy = acc(1);    
+risk = 100-SVMaccuracy;
 
 end
 

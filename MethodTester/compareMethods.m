@@ -31,7 +31,7 @@ for i = 1:numDataSetsConsidered
     
     
     for j=1:size(methodCombinations,2)
-        [riskValues(j,i), confusionMatrices(1:2,1:2,j,i)] = classifyData(AllTrainingData(i),AllTestData,methodCombinations(1,j),methodCombinations(2,j),methodCombinations(3,j), numStraps);
+        [riskValues(j,i), confusionMatrices(1:2,1:2,j,i)] = classifyData(AllTrainSets(i),AllTestSets,methodCombinations(1,j),methodCombinations(2,j),methodCombinations(3,j), numStraps);
         
     end
     

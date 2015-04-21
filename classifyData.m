@@ -1,4 +1,4 @@
-function [risk, rHat, confusionMatrix] = classifyData(trainingData,testData,featureSelectionMethod,dataCreationMethod,classificationMethod, numStraps)
+function [risk, confusionMatrix] = classifyData(trainingData,testData,featureSelectionMethod,dataCreationMethod,classificationMethod, numStraps)
 
 
 %notes: should we normalize the confusion matrix to make it percentages?

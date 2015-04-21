@@ -1,4 +1,4 @@
-function [ output_args ] = compareMethods(dataSet,classificationVector,numDataSetsConsidered)
+function [] = compareMethods(numDataSetsConsidered)
 %COMPAREMETHODS given a datase, the function compares machine learning
 %methods
 %   
@@ -7,8 +7,6 @@ numStraps = 1;
 
 load AllTrainData.mat
 load AllTestData.mat
-
-[n,d] = size(dataSet);
 
 classificationMethods.names = {'Bayes','SVM'};
 classificationMathods.vector = [1,2];
@@ -33,7 +31,7 @@ for i = 1:numDataSetsConsidered
     
     
     for j=1:size(methodCombinations,2)
-        [riskValues(j,i) rHat, confusionMatrices(1:2,1:2,j,i)] = classifyData(AllTrainingData(i),AllTestData,methodCombinations(1,j),methodCombinations(2,j),methodCombinations(3,j), numStraps);
+        [riskValues(j,i), confusionMatrices(1:2,1:2,j,i)] = classifyData(AllTrainingData(i),AllTestData,methodCombinations(1,j),methodCombinations(2,j),methodCombinations(3,j), numStraps);
         
     end
     

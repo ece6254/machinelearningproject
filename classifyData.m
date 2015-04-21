@@ -1,6 +1,11 @@
 function [risk, rHat, confusionMatrix] = classifyData(trainingData,testData,featureSelectionMethod,dataCreationMethod,classificationMethod, numStraps)
 
 
+%notes: should we normalize the confusion matrix to make it percentages?
+
+
+
+
 k = 1; %we average classifiers over k for bootstrapping.  Right now it's just 1.
 
 switch featureSelectionMethod
@@ -24,7 +29,7 @@ switch dataCreationMethod
         %[trainingData, k] = function(trainingData);
         %maybe datCreatTrainData should be a cell array to separate data sets?
     case 2  %other method
-        trainingData = call_VirtualData(trainingData, 0.5)        
+        trainingData = call_VirtualData(trainingData, 0.5);       
         %call function here
         %trainingData = function(trainingData);
         
@@ -37,6 +42,7 @@ switch classificationMethod
         %call function here.
         %[classifier, rHat] = train(trainingData,k);
         %risk = classify(testData)
+        [risk, confusionMatrix] = call_Bayes(trainingData,testData);
         
         
     case 2  %SVM?

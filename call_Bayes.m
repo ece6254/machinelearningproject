@@ -1,9 +1,12 @@
-function [risk,confusionMatrix] = call_Bayes(trainingData,testData)
-    nb = NaiveBayes.fit(trainingData.x,trainingData.y);
-    yhat = predict(nb,testData.x); %corrected. 
+function [risk, confusionMatrix] = call_Bayes(trainingData,testData)
+
+    nb = NaiveBayes.fit(trainingData.x, trainingData.y);
+    
+    yhat = nb.predict(testData.x); %corrected. 
     %yhat = predict(nb,testData.y);% thought this
+    
     risk = mean(abs(testData.y-yhat));
+    
     confusionMatrix = confusionmat(testData.y,yhat);
 end
-
 

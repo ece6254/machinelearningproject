@@ -30,6 +30,7 @@ folder = './by10s/';
 
 % SELECT number of instances in each new subset
 numInstSub = 50:10:700;
+numInstSub = numInstSub';
 
 % SELECT if we want to compute the best regularization parameter or not
 getbestC = 0;   % [0/1]
@@ -76,14 +77,17 @@ datasets(length(numInstSub)) = struct('ID', 0, 'x', 0, 'y', 0);
 count = 0;
 
 % go over all sets
-for i = numInstSub
+for i = 1:length(numInstSub)
     
     % update loop counter
     count = count + 1;
     
+    % get current subset number
+    num = numInstSub(i);
+    
     % get current filename
     clear filename
-    filename = strcat(folder, 'subset', num2str(i), '.mat');
+    filename = strcat(folder, 'subset', num2str(num), '.mat');
     
     % load current file
     datasets(count) = load(filename); 
@@ -153,6 +157,7 @@ disp('Applying SVM... Complete');
 disp(' ');
 
 
+
 %% Apply Naive Bayes
 % -------------------
 
@@ -201,6 +206,22 @@ disp(' ');
 
 
 
+%% Fit Quadratic Lines
+% --------------------
+
+disp('Fitting Quadratic Lines...');
+
+% for SVM
+fSVM = fit(numInstSub, SVMaccuracy, 'poly2');
+
+% for Naive Bayes
+fNaiveBayes = fit(numInstSub, NBaccuracy, 'poly2');
+
+
+disp('Fitting Quadratic Lines... Complete');
+disp(' ');
+
+
 
 %% Plot
 % ------
@@ -210,6 +231,7 @@ disp('Plotting...');
 % line width and font size
 w = 2;
 f = 16;
+
 
 % SVM classification accuracy vs number of instances in dataset
 tit = 'SVM: Classification Accuracy vs Number of Instances';
@@ -222,11 +244,16 @@ set(fig, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
 
 plot(numInstSub, SVMaccuracy, 'linewidth', w);
 grid on
+hold on
+plot(fSVM, numInstSub, SVMaccuracy);
 title(tit, 'fontweight', 'bold', 'fontsize', f);
 xlabel('Number of Instances per Dataset', ...
     'fontweight', 'bold', 'fontsize', f/1.2);
 ylabel('Classification Accuracy [%]', ...
     'fontweight', 'bold', 'fontsize', f/1.2);
+axis([0 700 49 72]);
+hold off
+
 
 
 % Naive Bayes classification accuracy vs number of instances in datasets
@@ -240,11 +267,15 @@ set(fig, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
 
 plot(numInstSub, NBaccuracy, 'linewidth', w);
 grid on
+hold on
+plot(fNaiveBayes, numInstSub, NBaccuracy);
 title(tit, 'fontweight', 'bold', 'fontsize', f);
 xlabel('Number of Instances per Dataset', ...
     'fontweight', 'bold', 'fontsize', f/1.2);
 ylabel('Classification Accuracy [%]', ...
     'fontweight', 'bold', 'fontsize', f/1.2);
+axis([0 700 48 64]);
+hold off
 
 
 

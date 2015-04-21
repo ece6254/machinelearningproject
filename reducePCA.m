@@ -20,6 +20,7 @@ function [dataTrain, dataTest] = reducePCA(dataTrain, dataTest, k)
     % transformed observations
     [ATemp, ThetaTemp] = pca(X);
     A = ATemp(:, 1 : k);
+    size(A)
     dataTrain.x = ThetaTemp(:, 1 : k);
     
     %Subtract off the mean from new data such that the new data is also

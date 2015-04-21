@@ -5,8 +5,8 @@ function [] = compareMethods(numDataSetsConsidered)
 
 numStraps = 1;
 
-load AllTrainData.mat
-load AllTestData.mat
+load('AllTrainSets.mat');
+load('AllTestSets.mat');
 
 classificationMethods.names = {'Bayes','SVM'};
 classificationMathods.vector = [1,2];

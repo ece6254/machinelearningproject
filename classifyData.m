@@ -1,7 +1,7 @@
-function [risk, rHat] = classifyData(trainingData,testData,featureSelectionMethod,dataCreationMethod,classificationMathod, numStraps)
+function [risk, rHat, confusionMatrix] = classifyData(trainingData,testData,featureSelectionMethod,dataCreationMethod,classificationMethod, numStraps)
 
 
-k = 1; %we average classifiers over k for bootstrapping.  OW it's just 1.
+k = 1; %we average classifiers over k for bootstrapping.  Right now it's just 1.
 
 switch featureSelectionMethod
         
@@ -24,14 +24,14 @@ switch dataCreationMethod
         %[trainingData, k] = function(trainingData);
         %maybe datCreatTrainData should be a cell array to separate data sets?
     case 2  %other method
-        trainingData= call_VirtualData(trainingData, 0.5)        
+        trainingData = call_VirtualData(trainingData, 0.5)        
         %call function here
         %trainingData = function(trainingData);
         
 end
 
 
-switch classificationMathod
+switch classificationMethod
         
     case 1  %bayes?
         %call function here.
@@ -43,6 +43,8 @@ switch classificationMathod
         %call function here
         %[classifier, rHat] = train(trainingData,k);
         %risk = classify(testData)
+        [risk, confusionMatrix] = call_svm(trainingData, testData, numStraps);
+        
         
     otherwise
         %throw error

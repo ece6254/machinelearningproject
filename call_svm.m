@@ -1,4 +1,4 @@
-function [SVMaccuracy, confusionMatrix] = ...
+function [risk, confusionMatrix] = ...
     call_svm(trainingData, testData, numStraps)
 
 %for i = numStraps:-1:1
@@ -22,7 +22,7 @@ confusionMatrix = confusionmat(testData.y, predicted_label);
 SVMaccuracy = acc(1);
 
 % risk?
-% risk = 100-SVMaccuracy;
+risk = (100 - SVMaccuracy) / 100;
 
 
 end

@@ -8,16 +8,17 @@ numStraps = 1;
 load('AllTrainSets.mat');
 load('AllTestSets.mat');
 
-classificationMethods.names = {'Bayes','SVM'};
-classificationMathods.vector = [1,2];
-featureSelectionMethods.names = {'None','PCA','Go Decomposition'};
+classificationMethods.names = {'Bay','SVM','NNC'};
+classificationMethods.vector = [1,2,3];
+featureSelectionMethods.names = {'NA','PCA','Go'};
 featureSelectionMethods.vector = [0,1,2];
-dataCreationMethods.names = {'None','Virtual Samples'};
-dataCreationMethods.vector = [0,1];
-methodCombinations = combvec(featureSelectionMethods.vector,dataCreationMethods.vector,classificationMathods.vector);
+dataCreationMethods.names = {'NA','BS','VS'};
+dataCreationMethods.vector = [0,2];
+methodCombinations = combvec(featureSelectionMethods.vector,dataCreationMethods.vector,classificationMethods.vector);
 
 confusionMatrices = zeros(2,2,size(methodCombinations,2),numDataSetsConsidered);
 riskValues = zeros(size(methodCombinations,2),numDataSetsConsidered);
+iVec = [];
 for i = 1:numDataSetsConsidered
     %classifier = performMethods(dataSet(dataChosen,:),classificationVector(dataChosen))
     %bootstrapping - training set, will run iteration on training set.
@@ -27,17 +28,25 @@ for i = 1:numDataSetsConsidered
     %boosting - iterative.  take data classify once.  weight incorrectly
     %classified ones more.
     %pca.
+    i
     
-    
-    
+    try
+        
     for j=1:size(methodCombinations,2)
         [riskValues(j,i), confusionMatrices(1:2,1:2,j,i)] = classifyData(AllTrainSets(i),AllTestSets,methodCombinations(1,j),methodCombinations(2,j),methodCombinations(3,j), numStraps);
         
     end
-    
+     
+    catch 
+        iVec = [iVec, i];
+        fprintf('Caught an error at %i',i);
+    end
     
     
 end
+
+confusionMatrices(:,:,:,iVec) = [];
+riskValues(:,iVec) = [];
 
 confusionMean = mean(confusionMatrices,4);
 confusionMax = max(confusionMatrices,[],4);
@@ -52,12 +61,13 @@ riskSTD = std(riskValues,0,2);
 
 cellArrayOfNames = cell(1,size(methodCombinations,2));
 
-for i = 1:methodCombinations
-    cellArrayOfNames{i} = [classificationMethods.names{methodCombinations(3,i)}, '/', featureSelectionMethods.names{methodCombinations(1,i)}, '/', dataCreationMethods.names{methodCombinations(2,i)}];
+for i = 1:size(methodCombinations,2)
+    cellArrayOfNames{i} = [classificationMethods.names{methodCombinations(3,i)}, '/', featureSelectionMethods.names{methodCombinations(1,i)+1}, '/', dataCreationMethods.names{methodCombinations(2,i)+1}];
 end
 
-
-meanHandle = barGraphData(riskMean, cellArrayOfNames, 'Risk Means');
+boxplot(riskValues', 'labels',cellArrayOfNames)
+grid on
+%meanHandle = barGraphData(riskMean, cellArrayOfNames, 'Risk Means');
 
 
 end

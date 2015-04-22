@@ -14,17 +14,19 @@ switch featureSelectionMethod
         
         %call function here
         %[trainingData, testData] = function(trainingData, testData);
+        [trainingData,testData] = reducePCA(trainingData,testData,20);
     case 2  %other method
 
         %call function here
         %[trainingData, testData] = function(trainingData, testData);
+        [trainingData,testData] = reduceGoDec(trainingData,testData,20);
         
 end
 
 switch dataCreationMethod
             
     case 1  %bootstrap?
-        [trainingData, k] = call_Bootstrap(trainingData, numStraps);
+        %[trainingData, k] = call_Bootstrap(trainingData, numStraps);
         %call function here.
         %[trainingData, k] = function(trainingData);
         %maybe datCreatTrainData should be a cell array to separate data sets?
@@ -51,7 +53,9 @@ switch classificationMethod
         %risk = classify(testData)
         [risk, confusionMatrix] = call_svm(trainingData, testData, numStraps);
         
+    case 3
         
+        [risk, confusionMatrix] = call_NearestNeighbor(trainingData,testData,5);
     otherwise
         %throw error
         msgID = '';

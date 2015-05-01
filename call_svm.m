@@ -1,5 +1,5 @@
 function [risk, confusionMatrix] = ...
-    call_svm(trainingData, testData, numStraps)
+    call_svm(trainingData, testData, numStraps, C)
 
 %for i = numStraps:-1:1
 %    current_model = svmtrain(trainingData(i).x,trainingData(i).y);
@@ -8,10 +8,9 @@ function [risk, confusionMatrix] = ...
 % scale data
 trainingData.x = zscore(trainingData.x);
 testData.x = zscore(testData.x);
-
 % train model
 %current_model = svmtrain(trainingData.y, trainingData.x, '-q');
-current_model = svmtrain(trainingData.x, trainingData.y);
+current_model = svmtrain(trainingData.x, trainingData.y, 'Kernel_Function','rbf','BoxConstraint',C);
 
 % make predictions
 %[predicted_label, acc, ~] = svmpredict(testData.y, testData.x, current_model);

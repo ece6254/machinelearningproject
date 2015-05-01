@@ -51,11 +51,19 @@ switch classificationMethod
         %call function here
         %[classifier, rHat] = train(trainingData,k);
         %risk = classify(testData)
-        [risk, confusionMatrix] = call_svm(trainingData, testData, numStraps);
+        [risk, confusionMatrix] = call_svm(trainingData, testData, numStraps, 0.1);
         
     case 3
         
         [risk, confusionMatrix] = call_NearestNeighbor(trainingData,testData,5);
+        
+    case 4
+        
+        [risk, confusionMatrix] = call_svmWithBootstrap(trainingData,testData,numStraps);
+        
+    case 5
+        
+        [risk, confusionMatrix] = call_NearestNeighborWithBootstrap(trainingData,testData,numStraps);
     otherwise
         %throw error
         msgID = '';
